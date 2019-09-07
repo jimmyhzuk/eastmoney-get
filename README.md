@@ -4,3 +4,6 @@
 ~~~bash
 pip install requests
 ~~~
+
+### 修改此处代码
+ret = post_mail('stmp的qq邮箱', 'stmp的qq邮箱密码', '收信账号s', massage)
