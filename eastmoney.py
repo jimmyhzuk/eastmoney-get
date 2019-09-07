@@ -95,7 +95,7 @@ if __name__ == '__main__':
             +'\n第一为:'+data_list[0].name+'\n七日年化百分比:'+data_list[0].money \
             +'\n第二为:'+data_list[1].name+'\n七日年化百分比:'+data_list[1].money \
             +'\n第三为:'+data_list[2].name+'\n七日年化百分比:'+data_list[2].money
-        ret = post_mail('injahowczz@qq.com', 'zxnrcbtqycyybhej', ['injahow@qq.com'], massage)
+        ret = post_mail('你的qq邮箱', '你的qq邮箱stmp密码', ['injahow@qq.com'], massage)
         if ret:
             print("邮件发送成功!!!")
         else:
