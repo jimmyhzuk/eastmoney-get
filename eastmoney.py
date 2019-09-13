@@ -78,7 +78,7 @@ if __name__ == '__main__':
             f = open('eastmoney.ini', "w", encoding="utf-8")
             f.write('id')
             f.close()
-            print('!!!Please enter the section "id":"name" in the document to start!!!')
+            print('!!!Please enter the section "id" in the document to start!!!')
             exit()
 
     data = [
