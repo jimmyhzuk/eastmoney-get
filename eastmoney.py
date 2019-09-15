@@ -44,20 +44,19 @@ class Eastmoney():
         return self.getabstrs('ui-font-middle ui-color-red ui-num">', '%</span>', self.gethtml(self.main_url(), self.headers(referer='http://fund.eastmoney.com/')))
 
 if __name__ == '__main__':
-    def post_mail(my_sender, my_pass, to_users, my_message):
-        ret = True
+    def mail_is_ok(my_sender, my_pass, to_users, my_message):
         try:
             msg=MIMEText(my_message, 'plain', 'utf-8')
-            msg['From']=formataddr(["noreply", 'noreply@mail.com'])    # 括号里的对应发件人邮箱昵称、发件人邮箱账号
-            msg['To']=formataddr(["someone", 'someone@mail.com'])        # 括号里的对应收件人邮箱昵称、收件人邮箱账号
-            msg['Subject'] = "基金七日年化报告"                # 邮件的主题，也可以说是标题
+            msg['From']=formataddr(["noreply", 'noreply@mail.com']) # 括号里的对应发件人邮箱昵称、发件人邮箱账号
+            msg['To']=formataddr(["someone", 'someone@mail.com'])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
+            msg['Subject']="基金七日年化报告"  # 邮件的主题，也可以说是标题
             server=smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是465
             server.login(my_sender, my_pass)  # 括号中对应的是发件人邮箱账号、邮箱密码
             server.sendmail(my_sender, to_users, msg.as_string())  # 括号中对应的是发件人邮箱账号、收件人邮箱账号、发送邮件
             server.quit() # 关闭连接
         except Exception:
-            ret = False
-        return ret
+            return False
+        return True
 
     def eastmoneySort(data):
         eastmoney = [Eastmoney(id,name) for (id,name) in data]
@@ -71,15 +70,13 @@ if __name__ == '__main__':
             with open('eastmoney.ini',"r", encoding="utf-8") as f:
                 id_choice = f.read()
                 if id_choice == first_id:
-                    return 0
+                    return False
                 else:
-                    return 1
+                    return True
         else:
-            f = open('eastmoney.ini', "w", encoding="utf-8")
-            f.write('id')
-            f.close()
-            print('!!!Please enter the section "id" in the document to start!!!')
-            exit()
+            with open('eastmoney.ini', "w", encoding="utf-8") as f:
+                f.write('id')
+            return True
 
     data = [
         ('180008', '支付宝-余额宝-银华货币A'),
@@ -88,7 +85,7 @@ if __name__ == '__main__':
         ('000588', '招商银行-朝朝盈-招商招钱宝货币A'),
     ]
     data_list = eastmoneySort(data)
-    if not need_change(data_list[0].id):
+    if need_change(data_list[0].id):
         print('need change!!!')
         with open('eastmoney.ini', "w", encoding="utf-8") as f:
 	        f.write(data_list[0].id)
@@ -98,8 +95,7 @@ if __name__ == '__main__':
             i+=1
             massage+='\n第%d为:' % i + x.name + '\n七日年化百分比:'+ x.money
         #print(massage)
-        ret = post_mail('injahowczz@qq.com', 'zxnrcbtqycyybhej', ['injahow@qq.com'], massage)
-        if ret:
+        if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
             print("邮件发送成功!!!")
         else:
             print("邮件发送失败???")
