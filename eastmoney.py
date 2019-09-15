@@ -82,20 +82,23 @@ if __name__ == '__main__':
             exit()
 
     data = [
-        ('180008', '支付宝-银华货币A'),
-        ('000638', '微信-富国富钱包货币'),
-        ('000569', '京东-鹏华增值宝货币')
+        ('180008', '支付宝-余额宝-银华货币A'),
+        ('000638', '微信-零钱通-富国富钱包货币'),
+        ('000569', '京东-小金库-鹏华增值宝货币'),
+        ('000588', '招商银行-朝朝盈-招商招钱宝货币A'),
     ]
     data_list = eastmoneySort(data)
-    if need_change(data_list[0].id):
+    if not need_change(data_list[0].id):
         print('need change!!!')
         with open('eastmoney.ini', "w", encoding="utf-8") as f:
 	        f.write(data_list[0].id)
-        massage = '现在基金七日年化百分比排列出现变化！！！' \
-            +'\n第一为:'+data_list[0].name+'\n七日年化百分比:'+data_list[0].money \
-            +'\n第二为:'+data_list[1].name+'\n七日年化百分比:'+data_list[1].money \
-            +'\n第三为:'+data_list[2].name+'\n七日年化百分比:'+data_list[2].money
-        ret = post_mail('stmp的qq邮箱', 'stmp的qq邮箱密码', ['收信账号s'], massage)
+        i = 0
+        massage = '现在基金七日年化收益率排列出现变化！！！'
+        for x in data_list:
+            i+=1
+            massage+='\n第%d为:' % i + x.name + '\n七日年化百分比:'+ x.money
+        #print(massage)
+        ret = post_mail('injahowczz@qq.com', 'zxnrcbtqycyybhej', ['injahow@qq.com'], massage)
         if ret:
             print("邮件发送成功!!!")
         else:
