@@ -83,6 +83,9 @@ if __name__ == '__main__':
         ('000638', '微信-零钱通-富国富钱包货币'),
         ('000569', '京东-小金库-鹏华增值宝货币'),
         ('000588', '招商银行-朝朝盈-招商招钱宝货币A'),
+        #('000644', '招商银行-招商招金宝货币A'),
+        ('000397', '腾讯-腾讯腾安-汇添富全额宝货币'),
+        #('003536', '腾讯-腾讯腾安-浦银安盛日日丰货币D'),
     ]
     data_list = eastmoneySort(data)
     if need_change(data_list[0].id):
@@ -94,10 +97,10 @@ if __name__ == '__main__':
         for x in data_list:
             i+=1
             massage+='\n第%d为:' % i + x.name + '\n七日年化百分比:'+ x.money
-        #print(massage)
-        if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
+        print(massage)
+        '''if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
             print("邮件发送成功!!!")
         else:
-            print("邮件发送失败???")
+            print("邮件发送失败???")'''
     else:
         print('all ok!!!')
