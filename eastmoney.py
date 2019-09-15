@@ -75,7 +75,7 @@ if __name__ == '__main__':
                     return True
         else:
             with open('eastmoney.ini', "w", encoding="utf-8") as f:
-                f.write('id')
+                f.write('new_id_list')
             return True
 
     data = [
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     if is_change(new_id_list):
         print('need change!!!')
         with open('eastmoney.ini', "w", encoding="utf-8") as f:
-	        f.write(data_list[0].id)
+	        f.write(new_id_list)
         i = 0
         massage = '现在基金七日年化收益率排列出现变化！！！'
         for x in data_list:
