@@ -7,5 +7,5 @@ pip install requests
 
 ### 修改此处代码
 ~~~python
-ret = post_mail('stmp的qq邮箱', 'stmp的qq邮箱密码', '收信账号s', massage)
+mail_is_ok('stmp的qq邮箱', 'stmp的qq邮箱密码', '收信账号s', massage)
 ~~~
