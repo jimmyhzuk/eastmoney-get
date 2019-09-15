@@ -65,11 +65,11 @@ if __name__ == '__main__':
         #    print(element.name,":",element.money)
         return eastmoney
 
-    def need_change(first_id): # 优化为ini配置文件
+    def is_change(new_id_list): # 优化为ini配置文件
         if os.access("eastmoney.ini", os.F_OK):
             with open('eastmoney.ini',"r", encoding="utf-8") as f:
-                id_choice = f.read()
-                if id_choice == first_id:
+                old_id_list = f.read()
+                if old_id_list == new_id_list:
                     return False
                 else:
                     return True
@@ -88,7 +88,10 @@ if __name__ == '__main__':
         #('003536', '腾讯-腾讯腾安-浦银安盛日日丰货币D'),
     ]
     data_list = eastmoneySort(data)
-    if need_change(data_list[0].id):
+    new_id_list = ''
+    for x in data_list:
+        new_id_list += x.id
+    if is_change(new_id_list):
         print('need change!!!')
         with open('eastmoney.ini', "w", encoding="utf-8") as f:
 	        f.write(data_list[0].id)
