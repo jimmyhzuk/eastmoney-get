@@ -97,10 +97,10 @@ if __name__ == '__main__':
         for x in data_list:
             i+=1
             massage+='\n第%d为:' % i + x.name + '\n七日年化百分比:'+ x.money
-        print(massage)
-        '''if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
+        #print(massage)
+        if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
             print("邮件发送成功!!!")
         else:
-            print("邮件发送失败???")'''
+            print("邮件发送失败???")
     else:
         print('all ok!!!')
