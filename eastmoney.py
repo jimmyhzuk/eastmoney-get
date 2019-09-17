@@ -1,6 +1,6 @@
-# coding=utf-8
-
-import requests
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+import urllib.request
 import os
 import smtplib
 from email.mime.text import MIMEText
@@ -10,7 +10,7 @@ class Eastmoney():
     def __init__(self, id, name):
         self.id = id
         self.name = name
-        self.money = self.get_percentage_1()
+        self.time, self.money_7, self.money = self.get_percentage()
 
     @staticmethod
     def getabstrs(a, b, strs):# a|str|b
@@ -24,7 +24,9 @@ class Eastmoney():
 
     @staticmethod
     def gethtml(url, headers):
-        return requests.get(url, headers=headers).content.decode()
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req) as response:
+            return response.read().decode(encoding='utf-8')
 
     @staticmethod
     def headers(referer=None, cookie=None):
@@ -40,10 +42,14 @@ class Eastmoney():
     def main_url(self):
         return 'http://fund.eastmoney.com/%s.html' % self.id
         
-    def get_percentage_1(self):
-        return self.getabstrs('ui-font-middle ui-color-red ui-num">', '%</span>', self.gethtml(self.main_url(), self.headers(referer='http://fund.eastmoney.com/')))
+    def get_percentage(self):
+        html = self.gethtml(self.main_url(), self.headers(referer='http://fund.eastmoney.com/'))
+        #记录时间 #七日年化 #万份收益
+        return self.getabstrs('<span class="fix_date">', '</span>', html), \
+            self.getabstrs('ui-font-middle ui-color-red ui-num">', '%</span>', html) , \
+            self.getabstrs('<span class="fix_dwjz  bold ui-color-red">', '</span>', html)
 
-if __name__ == '__main__':
+def main():
     def mail_is_ok(my_sender, my_pass, to_users, my_message):
         try:
             msg=MIMEText(my_message, 'plain', 'utf-8')
@@ -60,9 +66,9 @@ if __name__ == '__main__':
 
     def eastmoneySort(data):
         eastmoney = [Eastmoney(id,name) for (id,name) in data]
-        eastmoney.sort(key=lambda x:x.money,reverse=True)#由大到小,降序输出
+        eastmoney.sort(key=lambda x:x.money_7,reverse=True)#由大到小,降序输出
         #for element in eastmoney:
-        #    print(element.name,":",element.money)
+        #    print(element.name,":",element.money_7)
         return eastmoney
 
     def is_change(new_id_list): # 优化为ini配置文件
@@ -79,31 +85,35 @@ if __name__ == '__main__':
             return True
 
     data = [
-        ('180008', '支付宝-余额宝-银华货币A'),
-        ('000638', '微信-零钱通-富国富钱包货币'),
-        ('000569', '京东-小金库-鹏华增值宝货币'),
-        ('000588', '招商银行-朝朝盈-招商招钱宝货币A'),
+        ('180008', '支付宝(余额宝)-银华货币A'),
+        ('000638', '微信(零钱通)-富国富钱包货币'),
+        ('000569', '京东(小金库)-鹏华增值宝货币'),
+        ('000588', '招商银行(朝朝盈)-招商招钱宝货币A'),
         #('000644', '招商银行-招商招金宝货币A'),
-        ('000397', '腾讯-腾讯腾安-汇添富全额宝货币'),
-        #('003536', '腾讯-腾讯腾安-浦银安盛日日丰货币D'),
+        #('000730', '招商银行-博时现金宝货币A'),
+        ('000397', '腾讯(腾讯腾安)-汇添富全额宝货币'),
+        #('003536', '腾讯(腾讯腾安)-浦银安盛日日丰货币D'),
     ]
     data_list = eastmoneySort(data)
     new_id_list = ''
     for x in data_list:
         new_id_list += x.id
-    if is_change(new_id_list):
-        print('need change!!!')
+    if not is_change(new_id_list):
+        print('Need Change!!!')
         with open('eastmoney.ini', "w", encoding="utf-8") as f:
 	        f.write(new_id_list)
         i = 0
         massage = '现在基金七日年化收益率排列出现变化！！！'
         for x in data_list:
             i+=1
-            massage+='\n第%d为:' % i + x.name + '\n七日年化百分比:'+ x.money
+            massage+='\n\n第%d为:\n%s%s\n|七日年化:%s%s||万份收益:%s|' % (i, x.name, x.time, x.money_7, '%', x.money)
         #print(massage)
         if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
             print("邮件发送成功!!!")
         else:
             print("邮件发送失败???")
     else:
-        print('all ok!!!')
+        print('All Ok!!!')
+
+if __name__ == '__main__':
+    main()
