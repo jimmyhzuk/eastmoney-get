@@ -98,7 +98,7 @@ def main():
     new_id_list = ''
     for x in data_list:
         new_id_list += x.id
-    if not is_change(new_id_list):
+    if is_change(new_id_list):
         print('Need Change!!!')
         with open('eastmoney.ini', "w", encoding="utf-8") as f:
 	        f.write(new_id_list)
