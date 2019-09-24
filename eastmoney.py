@@ -26,7 +26,7 @@ class Eastmoney():
     def gethtml(url, headers):
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req) as response:
-            return response.read().decode(encoding='utf-8')
+            return response.read().decode('utf-8')
 
     @staticmethod
     def headers(referer=None, cookie=None):
