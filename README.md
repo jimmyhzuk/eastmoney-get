@@ -15,8 +15,8 @@
 
 ### 运行演示
 
-![](https://raw.githubusercontent.com/injahow/eastmoney-get/master/25.1.png)
-![](https://raw.githubusercontent.com/injahow/eastmoney-get/master/25.2.png)
+![](./25.1.png)
+![](./25.2.png)
 
 ### 使用前
 修改此处代码
