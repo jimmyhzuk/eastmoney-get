@@ -80,8 +80,6 @@ def main():
                 else:
                     return True
         else:
-            with open('eastmoney.ini', "w", encoding="utf-8") as f:
-                f.write('id_list')
             return True
 
     data = [
