@@ -107,7 +107,7 @@ def main():
         for x in data_list:
             i+=1
             massage+='\n\n第%d为:\n%s%s\n|七日年化:%s%s||万份收益:%s|' % (i, x.name, x.time, x.money_7, '%', x.money)
-        print(massage)
+        #print(massage)
         if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
             print("邮件发送成功!!!")
         else:
