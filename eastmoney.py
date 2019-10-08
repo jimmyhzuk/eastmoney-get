@@ -45,16 +45,16 @@ class Eastmoney():
     def get_percentage(self):
         html = self.gethtml(self.main_url(), self.headers(referer='http://fund.eastmoney.com/'))
         #记录时间 #七日年化 #万份收益
-        return self.getabstrs('<span class="fix_date">', '</span>', html), \
-            self.getabstrs('ui-font-middle ui-color-red ui-num">', '%</span>', html) , \
-            self.getabstrs('<span class="fix_dwjz  bold ui-color-red">', '</span>', html)
+        return self.getabstrs('class="fix_date">', '<', html), \
+            self.getabstrs('ui-font-middle ui-color-red ui-num">', '%<', html) , \
+            self.getabstrs('class="fix_dwjz  bold ui-color-red">', '<', html)
 
 def main():
     def mail_is_ok(my_sender, my_pass, to_users, my_message):
         try:
             msg=MIMEText(my_message, 'plain', 'utf-8')
-            msg['From']=formataddr(["noreply", 'noreply@mail.com']) # 括号里的对应发件人邮箱昵称、发件人邮箱账号
-            msg['To']=formataddr(["someone", 'someone@mail.com'])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
+            msg['From']=formataddr(['noreply', 'noreply@mail.com']) # 括号里的对应发件人邮箱昵称、发件人邮箱账号
+            msg['To']=formataddr(['someone', 'someone@mail.com'])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
             msg['Subject']="基金七日年化报告"  # 邮件的主题，也可以说是标题
             server=smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是465
             server.login(my_sender, my_pass)  # 括号中对应的是发件人邮箱账号、邮箱密码
@@ -72,7 +72,7 @@ def main():
         return eastmoney
 
     def is_change(new_id_list): # 优化为ini配置文件
-        if os.access("eastmoney.ini", os.F_OK):
+        if os.access('eastmoney.ini', os.F_OK):
             with open('eastmoney.ini',"r", encoding="utf-8") as f:
                 old_id_list = f.read()
                 if old_id_list == new_id_list:
@@ -81,7 +81,7 @@ def main():
                     return True
         else:
             with open('eastmoney.ini', "w", encoding="utf-8") as f:
-                f.write('new_id_list')
+                f.write('id_list')
             return True
 
     data = [
@@ -107,7 +107,7 @@ def main():
         for x in data_list:
             i+=1
             massage+='\n\n第%d为:\n%s%s\n|七日年化:%s%s||万份收益:%s|' % (i, x.name, x.time, x.money_7, '%', x.money)
-        #print(massage)
+        print(massage)
         if mail_is_ok('***@qq.com', '***', ['***@qq.com'], massage):
             print("邮件发送成功!!!")
         else:
