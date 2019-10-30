@@ -22,6 +22,6 @@
 ### 使用注意
 修改此处代码
 ~~~python
-mail_is_ok('stmp的qq邮箱', 'stmp的qq邮箱密码', '收信账号s', massage)
+mail_is_ok('stmp的qq邮箱', 'stmp密码', '收信账号s', massage)
 ~~~
 把它放在服务器每天定时执行就可以了。
