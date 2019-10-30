@@ -16,8 +16,8 @@
 |...   | ... |...|
 
 ### 运行演示
-![](./25.1.png)
-![](./25.2.png)
+![](https://img.injahow.com/images/2019/09/24/25.1.png)
+![](https://img.injahow.com/images/2019/09/24/25.2.png)
 
 ### 使用注意
 修改此处代码
